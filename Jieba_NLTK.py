@@ -4,9 +4,9 @@
 # This whole script is from https://www.jianshu.com/p/aea87adee163, on 2020-4-10
 
 import jieba
-import jieba.posseg as pseg
+import jieba.posseg as pseg     # 词性标注分词器，jieba.posseg.dt，200421
 import codecs
-import re # 正则表达式模块，Python独有模块
+import re
 import os
 import time
 import string
@@ -41,7 +41,7 @@ class keyword(object):
         for word in wordlist:
             if word not in chinese_stopwords:#词语的清洗：去停用词
                 if word != '\r\n'  and word!=' ' and word != '\u3000'.decode('unicode_escape') \
-                        and word!='\xa0'.decode('unicode_escape'):#词语的清洗：去全角空格
+                        and word!='\xa0'.decode('unicode_escape'):#词语的清洗：去全角空格。不过全角字符较多，为啥光去一个全角空格？？？200421
                     wordlist_N.append(word)
         return wordlist_N
 
@@ -60,7 +60,7 @@ class keyword(object):
         vocab=[]
         for k,v in item:
             vocab.append((k,v))
-        List=list(sorted(vocab,key=lambda v:v[1],reverse=1))
+        List=list(sorted(vocab,key=lambda v:v[1],reverse=1))    # 用到lambda了！！！200421
         return List
 
     def Run(self):
@@ -75,7 +75,7 @@ class keyword(object):
     def __init__(self, filename):
         self.filename = filename
 
-if __name__=='__main__':
+if __name__=='__main__':        # 用到__init__，在一个自定义类中；也用到__name__和__main__，在主程序中。200421
     b_path = 'data/all'
     a_path = 'data/Result'
     roots = os.listdir(b_path)
@@ -84,7 +84,7 @@ if __name__=='__main__':
         starttime = time.time()
         kw = keyword(b_path + '/' + filename)
         wl = kw.Run()
-        fdist = FreqDist(wl)
+        fdist = FreqDist(wl)    # NLTK的频率函数？和手写的词频函数有啥区别？200421
         Sum = len(wl)
         pre = 0
         fn = open(a_path + '/' + filename, 'w+', 'utf-8')
