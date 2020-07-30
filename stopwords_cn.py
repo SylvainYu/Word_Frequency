@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import codecs
 import jieba
 
@@ -29,7 +29,7 @@ def drop_stopwords(words_in):
             if word != '\t':
                 outstr.append(word)
 
-    wt = " /".join(outstr)
+    wt = " ".join(outstr)
 
     return wt
 
