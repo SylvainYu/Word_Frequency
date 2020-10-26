@@ -32,3 +32,48 @@ zip() 函数用于将可迭代的对象作为参数，将对象中对应的元�
 
 collection模块的Counter()函数用于支持便捷和快速地计数。另，collection模块中也有Counter类，是dict子类，用于计数可哈希的对象。是一个无序的容器，元素被作为字典的key存储，其技术作为地点的value存储。
 *****************************
+
+
+
+2020-9对原始代码的Note
+******************************
+-
+get_news_text模块
+=============
+一个函数一个单元(cell)，整洁的格式，方便查看方便修改。
+
+cell[3]: getOneArtical(url)
+开头的函数说明提及返回的类型是“二元组”，是tuple么？soup = BeautifulSoup(re.text)之后，soup.find().text.strip()返回的是tuple？
+
+cell[4]: getPageLinks()
+该函数中有一个global browser，这样browser变量声明为全局，整个模块都能使用browser了？
+**********************************
+后面还有browser.find_elements_by_xpath()，这是一个（全局）类？
+google没有查到browser类，在Selenium-Python文档中搜索到.find_elements_by_xpath()是selenium模块webdriver.common.by下的，一次查找多个元素（返回一个list列表）。
+**********************************
+cell[5]中看到了browser引用，是全局。而且引用全是和浏览器设置、信息获取等相关。
+
+
+preprocessing模块
+=================
+
+cell[2]中wordtable没有生成，代码中直接读取wordtable文件。cell[5]中可以看出，当初cell[2]读取的仅仅是空文件。
+
+cell[3]和cell[4]中分别取出停止词，加载用户词典。cell[4]中word_table = {}生成待用。
+cell[3]中去停止词使用stopwords = set(map(lamba x:x.strip(), stopwords)) # 去除末尾换行符。这样一个我没有用过的方法？？？后来在ngram模块中也这样操作，不晓得有啥优缺。
+
+每读取一个文件才进行一次处理，去除特殊字符全角空格啥的，然后计算句子数量。后续代码中还有辨识有效中文字符，无效的全部用空格代替！
+cell[5]中使用了enumerate(word_table)函数，将整理的来的词汇列表写入wordtable.txt文件。
+**********************************
+enumerate()是python内置函数，对于一个可迭代的(iterable)/可遍历的对象（例如列表、字符串），enumerate将其组成一个索引苏烈，利用它可同时获得索引和值；enumerate多用在for循环中得到计数；enumerate()返回的是一个enumerate对象。
+**********************************
+在监督记录中有些文字没有标点符号，只用空格代替；估计是为了输入方便偷懒。其实可以用Excel中的数字序号来断句，再加上空格。计算句子数量有所偏差，但断句以后将来主题辨识能大致区分安全安装土建属性。有这样一个思考就行。
+
+
+ngram模块
+===========
+cell[2]中，n = 3。
+
+cell[4]，all_word = []，随后all_word是通过读取前面preprocessing模块生成woadtable.txt文件而生成的。
+
+cell[9]中准确率计算也不晓得是啥原理。
