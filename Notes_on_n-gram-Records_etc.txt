@@ -26,9 +26,75 @@ range()和zip()用法需要明确。后续还有collection模块的Counter()函�
 *****************************
 Python3 range() 函数返回的是一个可迭代对象（类型是对象），而不是列表类型， 所以打印的时候不会打印列表。
 通常与range()配套使用的Python3 list() 函数是对象迭代器，可以把range()返回的可迭代对象转为一个列表，返回的变量类型为列表。
+语法
+------------------
+range(stop)
+range(start, stop[, step])
+------------------
+参数说明：
+start: 计数从 start 开始。默认是从 0 开始。例如range（5）等价于range（0， 5）;
+stop: 计数到 stop 结束，但不包括 stop。例如：range（0， 5） 是[0, 1, 2, 3, 4]没有5
+step：步长，默认为1。例如：range（0， 5） 等价于 range(0, 5, 1)
+
+实例
+-----------------
+>>>range(5)
+range(0, 5)
+>>> for i in range(5):
+...     print(i)
+... 
+0
+1
+2
+3
+4
+>>> list(range(5))
+[0, 1, 2, 3, 4]
+>>> list(range(0))
+[]
+------------------
+有两个参数或三个参数的情况（第二种构造方法）：:
+------------------
+>>>list(range(0, 30, 5))
+[0, 5, 10, 15, 20, 25]
+>>> list(range(0, 10, 2))
+[0, 2, 4, 6, 8]
+>>> list(range(0, -10, -1))
+[0, -1, -2, -3, -4, -5, -6, -7, -8, -9]
+>>> list(range(1, 0))
+[]
+------------------
 
 zip() 函数用于将可迭代的对象作为参数，将对象中对应的元素打包成一个个元组，然后返回由这些元组组成的对象，这样做的好处是节约了不少的内存。
 通常我们可以使用 list() 转换来输出列表。如果各个迭代器的元素个数不一致，则返回列表长度与最短的对象相同，利用*号操作符，可以将元组解压为列表。
+zip 语法：
+------------------
+zip([iterable, ...])
+------------------
+参数说明：
+iterabl -- 一个或多个迭代器;
+返回一个对象。
+
+实例
+以下实例展示了 zip 的使用方法：
+------------------
+>>>a = [1,2,3]
+>>> b = [4,5,6]
+>>> c = [4,5,6,7,8]
+>>> zipped = zip(a,b)     # 返回一个对象
+>>> zipped
+<zip object at 0x103abc288>
+>>> list(zipped)  # list() 转换为列表
+[(1, 4), (2, 5), (3, 6)]
+>>> list(zip(a,c))              # 元素个数与最短的列表一致
+[(1, 4), (2, 5), (3, 6)]
+ 
+>>> a1, a2 = zip(*zip(a,b))          # 与 zip 相反，zip(*) 可理解为解压，返回二维矩阵式
+>>> list(a1)
+[1, 2, 3]
+>>> list(a2)
+[4, 5, 6]
+------------------
 
 collection模块的Counter()函数用于支持便捷和快速地计数。另，collection模块中也有Counter类，是dict子类，用于计数可哈希的对象。是一个无序的容器，元素被作为字典的key存储，其技术作为地点的value存储。
 *****************************
@@ -65,7 +131,44 @@ cell[3]中去停止词使用stopwords = set(map(lamba x:x.strip(), stopwords)) #
 每读取一个文件才进行一次处理，去除特殊字符全角空格啥的，然后计算句子数量。后续代码中还有辨识有效中文字符，无效的全部用空格代替！
 cell[5]中使用了enumerate(word_table)函数，将整理的来的词汇列表写入wordtable.txt文件。
 **********************************
-enumerate()是python内置函数，对于一个可迭代的(iterable)/可遍历的对象（例如列表、字符串），enumerate将其组成一个索引苏烈，利用它可同时获得索引和值；enumerate多用在for循环中得到计数；enumerate()返回的是一个enumerate对象。
+enumerate()是python内置函数，对于一个可迭代的(iterable)/可遍历的对象（例如列表、字符串），enumerate将其组成一个索引序列，利用它可同时获得索引和值；enumerate多用在for循环中得到计数；enumerate()返回的是一个enumerate（枚举）对象。
+enumerate()方法的语法：
+enumberate(sequence, [start=0])
+其中：
+sequence -- 一个序列、迭代器或其他支持迭代对象；
+start -- 下标起始位置。
+
+实例
+以下展示了使用 enumerate() 方法的实例：
+----------------
+>>>seasons = ['Spring', 'Summer', 'Fall', 'Winter']
+>>> list(enumerate(seasons))
+[(0, 'Spring'), (1, 'Summer'), (2, 'Fall'), (3, 'Winter')]
+>>> list(enumerate(seasons, start=1))       # 下标从 1 开始
+[(1, 'Spring'), (2, 'Summer'), (3, 'Fall'), (4, 'Winter')]
+----------------
+普通的 for 循环
+----------------
+>>>i = 0
+>>> seq = ['one', 'two', 'three']
+>>> for element in seq:
+...     print i, seq[i]
+...     i +=1
+... 
+0 one
+1 two
+2 three
+----------------
+for 循环使用 enumerate
+----------------
+>>>seq = ['one', 'two', 'three']
+>>> for i, element in enumerate(seq):
+...     print i, element
+... 
+0 one
+1 two
+2 three
+----------------
 **********************************
 在监督记录中有些文字没有标点符号，只用空格代替；估计是为了输入方便偷懒。其实可以用Excel中的数字序号来断句，再加上空格。计算句子数量有所偏差，但断句以后将来主题辨识能大致区分安全安装土建属性。有这样一个思考就行。
 
